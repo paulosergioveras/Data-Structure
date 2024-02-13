@@ -1,73 +1,101 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
-    char char_value;
-    int frequency;
-    struct Node* next;
-} Node;
+#define size 256
 
-Node* create_linked_list(char* text) {
-    int char_frequency[256] = {0};  // Inicializa um array para contar a frequência de cada caractere
-    
-    // Conta a frequência de cada caractere no texto
-    for (int i = 0; text[i] != '\0'; i++) {
-        char_frequency[(unsigned char)text[i]]++;
+typedef struct node{
+    char letter;
+    int freq;
+    struct node *next;
+}node;
+
+node* create_node(char letter){
+    node *new_node = (node*)malloc(sizeof(node));
+
+    if(new_node == NULL){
+        fprintf(stderr, "erro\n");
+        exit(EXIT_FAILURE);
     }
-    
-    Node* head = NULL;
-    Node* tail = NULL;
-    
-    // Cria a lista encadeada
-    for (int i = 0; i < 256; i++) {
-        if (char_frequency[i] > 0) {
-            Node* new_node = (Node*)malloc(sizeof(Node));
-            new_node->char_value = (char)i;
-            new_node->frequency = char_frequency[i];
-            new_node->next = NULL;
-            
-            if (head == NULL) {
-                head = new_node;
-                tail = new_node;
-            } else {
-                tail->next = new_node;
-                tail = new_node;
-            }
-        }
-    }
-    
-    return head;
+
+    new_node->letter = letter;
+    new_node->freq = 1;
+    new_node->next = NULL;
+    return new_node;
 }
 
-void print_linked_list(Node* head) {
-    Node* current = head;
-    while (current != NULL) {
-        printf("%c %d\n", current->char_value, current->frequency);
+node* start_linked_list(){
+    node *temp = create_node('\0'); // cria uma lista com caracter nulo
+    temp->next = NULL;
+    return temp;
+}
+
+// coloca na ordem decrescente:
+
+void aux_add_node(node *current, char letter){
+    node *aux_node = create_node(letter);
+    aux_node->next = current->next;
+    current->next = aux_node;
+}
+
+// adiciona o nó de forma DECRESCENTE de acordo com a tabela ASCII:
+
+// adiciona o nó de forma DECRESCENTE de acordo com a tabela ASCII:
+void add_node(node *head, char letter) {
+
+    // nao adiciona quebra de linha na lista
+    if (letter == '\n') {
+        return;
+    }
+
+    node *current = head;
+
+    // percorre a lista e encontra a melhor posição: (melhor posição sera a decrescente)
+    while (current->next != NULL && current->next->letter > letter) {
+        current = current->next;
+    }
+
+    // verifica se ja existe a letra na lista
+    // ee tiver, incrementa na frequência
+    if (current->next != NULL && current->next->letter == letter) {
+        current->next->freq++;
+    }
+    else{
+        // se não, chama a função auxiliar para adicionar o novo nó
+        aux_add_node(current, letter);
+    }
+}
+
+
+void print_linked_list(node *head){
+    node *current = head->next;
+    while(current != NULL){
+        printf("%c %d\n", current->letter, current->freq);
         current = current->next;
     }
 }
 
-void free_linked_list(Node* head) {
-    Node* current = head;
-    Node* next;
-    while (current != NULL) {
+void free_list(node *head){
+    node *current = head;
+    node *next;
+
+    while(current != NULL){
         next = current->next;
         free(current);
         current = next;
     }
 }
 
-int main() {
-    printf("Digite um texto: ");
-    
-    char text[1000];
-    fgets(text, sizeof(text), stdin);
-    
-    Node* linked_list_head = create_linked_list(text);
-    print_linked_list(linked_list_head);
-    
-    // Liberar a memória alocada para a lista encadeada
-    free_linked_list(linked_list_head);
-    
+int main(){
+    char txt[size];
+    fgets(txt, size, stdin);
+    node *list = start_linked_list();
+
+    for(int i = 0; txt[i] != '\0'; i++){
+        add_node(list, txt[i]);
+    }
+
+    print_linked_list(list);
+    free_list(list);
+
     return 0;
 }
