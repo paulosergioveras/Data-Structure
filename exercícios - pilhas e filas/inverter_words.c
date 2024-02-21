@@ -52,29 +52,44 @@ ITEM top(TPilha *p) {
 }
 
 void inverte_palavras_frase(char frase[]) {
-TPilha stack;
+    TPilha stack;
     create(&stack);
 
-    int j = 0;
+    int i = 0;
 
-    //for para percorrer a frase:
+    while (frase[i] != '\0') {
 
-    for(int i = 0; i <= strlen(frase); i++){
-        //verifica se o caracter � um espa�o ou nulo:
+        //while principal para percorrer ate
+        //o fim da string ser encontrado
 
-        if(frase[i] == ' ' || frase[i] == '\0'){
-            while(!isempty(&stack)){
-                frase[j++] = pop(&stack); 
-                //desempilha o ultimo caracter e armazena em j
-                //depois incrementa j e faz o mesmo
-            }
+        int j = i;
 
-            if(frase[i] == ' '){ // se o caracter for um espa�o
-                frase[j++] == ' '; //aqui tamb�m vai continuar sendo espa�o
-            }
+        while (frase[j] != ' ' && frase[j] != '\0') {
+
+            //vai empilhandondo caracter por caracter na stack
+            //e incrementando em j
+            //se j for ' ' ou '\0' o while interno se encerra
+
+            push(&stack, frase[j]);
+            j++;
         }
-        else{
-            push(&stack, frase[i]);
+
+        //esse while vai rodar enquanto a stack nao for vazia
+        while (!isempty(&stack)) {
+            //aqui basicamente vai pegar o top da stack
+            //e coloca na posição frase[i]
+            //depois i
+            //proxima iteração vai acontecer a mesma coisa ate a stack estar vazia
+            frase[i] = pop(&stack);
+            i++;
+        }
+
+        //verifica se é um espaço
+        //se for, significa que a palavra chegou no fim
+        //e incrementa em i para a proxima palavra
+
+        if (frase[j] == ' ') {
+            i++;
         }
     }
 }
