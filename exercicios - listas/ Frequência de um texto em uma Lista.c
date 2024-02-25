@@ -9,6 +9,7 @@ typedef struct node{
     struct node *next;
 }node;
 
+//função para criar nó:
 node* create_node(char letter){
     node *new_node = (node*)malloc(sizeof(node));
 

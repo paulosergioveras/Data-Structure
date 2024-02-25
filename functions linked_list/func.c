@@ -1,3 +1,7 @@
+//funções basicas
+//tem alguns erreos
+
+
 node* create_linked_list()
 {
     return NULL;
@@ -74,3 +78,4 @@ void print_list_reverse(node *head){
     print_list_reverse(head->next);
     printf("%d ", head->item);
 }
+
