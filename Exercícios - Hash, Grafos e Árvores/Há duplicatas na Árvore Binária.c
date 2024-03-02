@@ -136,13 +136,13 @@ bool haDuplicados(ARVORE_BINARIA *arvore, ARVORE_BINARIA *raiz){
     } //verifica a arvore da direita
 
 
+    //verifica se a arvore é diferente da raiz
+    //e se o item da arvore é igual o item da raiz
     if(arvore != raiz && arvore->item.chave == raiz->item.chave){
         return true;
     }
     
     return false;
-    //verifica se a arvore é diferente da raiz
-    //e se o item da arvore é igual o item da raiz
 }
 
 
