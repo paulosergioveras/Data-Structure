@@ -3,6 +3,7 @@
         "cstdlib": "c",
         "type_traits": "c",
         "string.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "limits.h": "c"
     }
 }
