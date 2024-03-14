@@ -120,7 +120,6 @@ int main(){
         bt *first_tree = build_tree(&entrr, NULL);
         second_tree = concatenate_tree(second_tree, first_tree);
     }
-
     print_tree(second_tree);
 
     return 0;
